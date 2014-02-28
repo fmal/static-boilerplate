@@ -50,7 +50,7 @@ $ make watch
 ```
 
 [jade]: http://jade-lang.com/
-[roro]: http://learnboost.github.io/stylus/
+[roro]: https://github.com/fmal/roro
 [make]: https://www.gnu.org/software/make/
 [inotifytools]: https://github.com/rvoicilas/inotify-tools
 [fswatch]: https://github.com/alandipert/fswatch
