@@ -1,0 +1,9 @@
+@import "./normalize_"
+
+:root {
+    var-purple: #847AD1;
+}
+
+html {
+    color: var(purple);
+}
