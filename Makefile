@@ -22,14 +22,13 @@ endif
 # Source files
 PAGES       = $(shell find sources/pages -name *.jade 2>/dev/null)
 LAYOUTS     = $(wildcard sources/layouts/*.jade)
-STYLESHEETS = $(filter-out %_.styl,$(wildcard sources/stylesheets/*.styl))
+STYLESHEETS = $(filter-out %_.css,$(wildcard sources/stylesheets/*.css))
 OTHER       = $(shell find static -type f 2>/dev/null)
 
 # Output files
 HTML   = $(addsuffix .html,\
 				 	 $(basename $(PAGES:sources/pages%=output%)))
-CSS    = $(addsuffix .css,\
-           $(basename $(STYLESHEETS:sources/stylesheets%=output/assets/css%)))
+CSS    = $(STYLESHEETS:sources/stylesheets%=output/assets/css%)
 STATIC = $(OTHER:static/%=output/assets/%)
 
 # Output directories
@@ -76,9 +75,9 @@ $(OUTDIR)/%.html: sources/pages/%.jade | $(OUTDIR)
 	@ jade -P -o $(shell dirname $@) >/dev/null $<
 
 # Rule for stylesheets
-$(CSSDIR)/%.css: sources/stylesheets/%.styl | $(CSSDIR)
+$(CSSDIR)/%.css: sources/stylesheets/%.css | $(CSSDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
-	@ stylus -u autoprefixer-stylus -o $(CSSDIR) >/dev/null $<
+	@ roro -b "last 2 versions, android 4" -o $(CSSDIR) >/dev/null $<
 
 # Rules for static assets
 $(ASSETSDIR)/%: static/% | $(ASSETSDIR)
@@ -92,7 +91,7 @@ setup: npm-deps bootstrap
 # Install npm dependencies
 npm-deps:
 	@ $(ECHO) "$(COL_Y)▸ Installing dependencies$(ENDC)"
-	@ sudo npm install -g jade stylus autoprefixer-stylus
+	@ sudo npm install -g jade roro
 
 # Bootstrap files
 bootstrap:
@@ -101,25 +100,25 @@ bootstrap:
 	@ mkdir -p sources/{layouts,pages,stylesheets} static
 	@
 	@ $(ECHO) "$(COL_Y)▸ Installing normalize$(ENDC)"
-	@ curl -s https://raw.github.com/skw/normalize.stylus/master/normalize.styl > sources/stylesheets/normalize_.styl
-	@ sed -i "9s/^/\/\//" sources/stylesheets/normalize_.styl
-	@ sed -i "s/\(box-sizing\)(\([^)]\+\))/\1 \2/" sources/stylesheets/normalize_.styl
-	@ $(ECHO) "  sources/stylesheets/normalize_.styl"
+	@ curl -s https://raw.github.com/necolas/normalize.css/master/normalize.css > sources/stylesheets/normalize_.css
+	# @ sed -i "9s/^/\/\//" sources/stylesheets/normalize_.css
+	# @ sed -i "s/\(box-sizing\)(\([^)]\+\))/\1 \2/" sources/stylesheets/normalize_.css
+	@ $(ECHO) "  sources/stylesheets/normalize_.css"
 	@
 	@ $(ECHO) "$(COL_Y)▸ Bootstraping with default files$(ENDC)"
-	@ curl -s https://raw.github.com/madx/veil/master/skel/default.jade > sources/layouts/default.jade
+	@ curl -s https://raw.github.com/fmal/static-boilerplate/master/skel/default.jade > sources/layouts/default.jade
 	@ $(ECHO) "  sources/layout/default.jade"
-	@ curl -s https://raw.github.com/madx/veil/master/skel/index.jade > sources/pages/index.jade
+	@ curl -s https://raw.github.com/fmal/static-boilerplate/master/skel/index.jade > sources/pages/index.jade
 	@ $(ECHO) "  sources/pages/index.jade"
-	@ curl -s https://raw.github.com/madx/veil/master/skel/stylesheet.styl > sources/stylesheets/stylesheet.styl
-	@ $(ECHO) "  sources/stylesheets/stylesheet.styl"
+	@ curl -s https://raw.github.com/fmal/static-boilerplate/master/skel/stylesheet.css > sources/stylesheets/stylesheet.css
+	@ $(ECHO) "  sources/stylesheets/stylesheet.css"
 	@
 	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
 
 # Upgrade this makefile
 upgrade:
 	@ $(ECHO) "$(COL_Y)▸ Fetching latest Makefile$(ENDC)"
-	@ curl -s https://raw.github.com/madx/veil/master/Makefile > Makefile
+	@ curl -s https://raw.github.com/fmal/static-boilerplate/master/Makefile > Makefile
 	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
 
 .PHONY: all clean setup npm-deps bootstrap announce-rebuild upgrade
