@@ -77,7 +77,7 @@ $(OUTDIR)/%.html: sources/pages/%.jade | $(OUTDIR)
 # Rule for stylesheets
 $(CSSDIR)/%.css: sources/stylesheets/%.css | $(CSSDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
-	@ roro -b "last 2 versions, android 4" -o $(CSSDIR) >/dev/null $<
+	@ roro -b "last 2 versions, android 4" -o $@ >/dev/null $<
 
 # Rules for static assets
 $(ASSETSDIR)/%: static/% | $(ASSETSDIR)
