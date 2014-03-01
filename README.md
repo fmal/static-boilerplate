@@ -1,7 +1,7 @@
 static-boilerplate
 ====
 
-This is a very simple boilerplate for writing static sites based on [veil](https://github.com/madx/) by [@madx](https://github.com/madx).
+This is a very simple boilerplate for writing static sites based on [veil](https://github.com/madx/veil) by [@madx](https://github.com/madx).
 
 It uses [Jade][jade] for templating, [roro][roro] for CSS generation and
 [GNU Make][make] for the build system.
